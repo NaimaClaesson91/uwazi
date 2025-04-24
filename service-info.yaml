@@ -1,8 +1,8 @@
 id: ai-migrations
 description: Central location of AI powered fleet shifts for migrations and other fleet wide changes.
 system: genai-migration
-owner: ssa
-visibility: private
+owner: genai-migration-experiment
+visibility: public
 dependencies: []
 
 facts:
