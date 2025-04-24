@@ -69,8 +69,24 @@ metadata:
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: "projects/genai-migration-experiment"
+    kind: SecretManagerSecret
+    external: "projects/genai-migration-experiment/secrets/google"
+  bindings:
+  - role: roles/secretmanager.secretAccessor
+    members:
+    - member: 
+        serviceAccount:shift-update-metadata-shift@genai-migration-experiment.iam.gserviceaccount.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: shift-update-metadata-shift-secret-accessor
+  namespace: genai-migration-experiment
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: SecretManagerSecret
+    external: "projects/genai-migration-experiment/secrets/openai"
   bindings:
   - role: roles/secretmanager.secretAccessor
     members:
