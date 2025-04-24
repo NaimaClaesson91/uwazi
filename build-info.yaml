@@ -1,0 +1,29 @@
+version: 2
+useBuildIdentity: true
+
+template:
+  type: dockerImage
+  dockerImage:
+    name: ai-migrations
+    gcpProject: genai-migration-experiment
+    tagLatest: true
+    testAction: gcr.io/web-infra/codemod-testrunner:2.1.5_20241016T175004
+    testArgs: []
+    declarativeInfra:
+      enabled: true
+
+environment:
+  - ref: ".*"
+    envs:
+      # This envvar will be used by codemod-testrunner
+      CODEMOD_IMAGE: ai-migrations
+
+notifications:
+  - ref: refs/heads/master
+    failure:
+      slack:
+        - $author
+  - ref: refs/pull/.*/merge
+    failure:
+      slack:
+        - $author

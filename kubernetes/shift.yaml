@@ -1,0 +1,97 @@
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: ai-migrations
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: ssa
+    spotify.com/description: Central location of AI powered fleet shifts for migrations and other fleet wide changes.
+spec:
+  container:
+    # The Docker image used to perform code changes. When the image is changed,
+    # all code changes will re-run and any open Pull Requests will be updated.
+    # The docker image will be substituted to contain the latest tag that is produced by your component
+    # More context: https://backstage.spotify.net/docs/default/component/declarative-infra/adr/0009-recommend-a-consistent-mechanism-for-injecting-built-docker-image-ids-into-krm-manifests/
+    image: gcr.io/genai-migration-experiment/ai-migrations
+
+    # You can optionally pass in a command and/or arguments to the docker container. They must both be string arrays.
+    # You can also set environment variables.
+    # Changing any of these will re-run the code-changes and rebase any open Pull Requests
+    # command: ["ls"]
+    # args: ["-la"]
+    # env:
+    # - name: MY_VARIABLE
+    #   value: "some value"
+
+  pullRequest:
+    # Great Pull Requests describes what the change is, why it's needed and who to reach out to for questions.
+    # Include a Slack channel or a FAQ for people to turn to when they have questions.
+    # Changing these fields will update any open Pull Requests
+    title: ai-migrations
+    description: |
+      Central location of AI powered fleet shifts for migrations and other fleet wide changes.
+
+      This Pull Request was created by ssa via Fleetshift.
+    commitMessage: Applying ai-migrations
+
+  rollout:
+    # Create Code Changes will fork the target repositories and apply code changes to the forks.
+    # You can then preview the changes in Backstage (https://backstage.spotify.net/fleetshift)
+    # along with the diffs, before you decide to open any Pull Requests.
+    createCodeChanges: true
+    # When this is true, Pull Requests will automatically be created when code changes are completed.
+    # If you set this back to false, all the open Pull Requests will be closed.
+    createPullRequests: false
+
+    # By default a shift only runs once or when relevant changes are made to this manifest.
+    # If you need it to run every day you can enable scheduling by setting this field to "daily".
+    # Examples of use-cases are regular bumping of dependencies (like Bomify) and monitoring/fixing security vulnerabilities.
+    # schedule: none | daily
+
+  # Supply either targetRepositories or targetRepositoriesSource. If you provide both, targetRepositories will be ignored.
+  targetRepositories:
+    # Enter a list of repositories you would like to affect with this Shift, in the format: org/repo
+    # If you append to this list later, new code changes will be created
+    # If you remove repositories from this list, any open Pull Requests for those repositories will be closed
+    # You can optionally add environment variables that will be combined with the ones specified above for this repo
+    - repo: starfleet/starfleet-test-service
+      # env:
+      # - name: FOO
+      #   value: "42"
+
+# As an alternative to specifying each repo above, you can specify a Codesearch query to find matching repositories
+# You can use https://codesearch.spotify.net/ to craft your query before you enter it here, for example:
+# targetRepositorySource:
+#   codesearch:
+#     query: 'content:liquibase file:pom.xml lifecycle:production'
+
+# As another alternative, you can specify a Data Endpoint containing the repos to target.
+# The value here *must* be the name of a Data Endpoint, i.e. something you can search for in Backstage, and not
+# just the name of a BQ table. For more information on Data Endpoints, see
+# https://backstage.spotify.net/docs/default/component/data-engineering-golden-path/part-4-deploying-and-scheduling-a-data-pipeline/7_1-intro-to-data-endpoints/
+#
+# While a Data Endpoint can point to data stored in a variety of storage systems (for example GCS, Postgres, etc),
+# Fleetshift currently only supports Data Endpoints that point to BigQuery tables.
+#
+# The underlying BQ table must contain either a column called "repo" that's a struct with {org_name, repo_name and full_name}
+# or a column called "repo_full_name" that a string, like "fleetshift/shifts".
+#
+# Fleetshift expects that the underlying BQ table is either natively-partitioned with ingestion time partitioning
+# (i.e. there is a `_PARTITIONTIME` pseudo-column) or that the table is date-sharded (table names end in "_yyyymmdd").
+# Fleetshift does not currently support BQ tables with time-unit column partitioning.
+# See https://cloud.google.com/bigquery/docs/partitioned-tables for more details.
+# targetRepositorySource:
+#   dataEndpoint:
+#     name: <data endpoint name>
+#
+# Fleetshift also supports targeting repositories by specifying a Soundcheck campaign name along with an optional list of checks.
+# All repos that are included in the campaign that have any of the checks failing will be targeted by your shift.
+# If there are no checks specified then all repositories in the campaign will be targeted.
+# targetRepositorySource:
+#   soundcheck:
+#     campaign: <soundcheck campaign name>
+#     checks:
+#       - <check 1 name goes here>
+#       - <check 2 name goes here>
+#       - <... etc.>
+
