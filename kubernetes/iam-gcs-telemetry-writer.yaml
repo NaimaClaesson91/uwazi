@@ -1,7 +1,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: shift-update-metadata-shift-honk-telemetry-writer
+  name: ai-migrations-iam-honk-telemetry-writer
   namespace: genai-migration-experiment
 spec:
   resourceRef:

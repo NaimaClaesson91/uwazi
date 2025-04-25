@@ -1,7 +1,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: shift-update-metadata-shift-service-usage-viewer
+  name: ai-migrations-iam-service-usage-viewer
   namespace: genai-migration-experiment
 spec:
   resourceRef:
