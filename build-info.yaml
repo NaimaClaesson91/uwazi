@@ -9,6 +9,9 @@ template:
 
 environment:
   - ref: ".*"
+    envs:
+      CODEMOD_IMAGE: ai-migrations
+
 
 notifications:
   - ref: refs/heads/master
