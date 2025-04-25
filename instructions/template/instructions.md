@@ -1,0 +1,1 @@
+Write the text "honk honk" to the file honk.txt.

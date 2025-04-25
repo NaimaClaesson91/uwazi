@@ -1,0 +1,22 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: shift-update-metadata-shift-gcr-viewer
+  namespace: genai-migration-experiment
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: "projects/genai-migration-experiment"
+  bindings:
+  - role: roles/storage.objectViewer
+    condition:
+      expression: 'resource.name.startsWith("projects/_/buckets/artifacts.genai-migration-experiment.appspot.com")
+        || resource.name.startsWith("projects/_/buckets/asia.artifacts.genai-migration-experiment.appspot.com")
+        || resource.name.startsWith("projects/_/buckets/eu.artifacts.genai-migration-experiment.appspot.com")
+        || resource.name.startsWith("projects/_/buckets/us.artifacts.genai-migration-experiment.appspot.com")'
+      title: "Only on GCR"
+      description: "GCR read access for everything in genai-migration-experiment to Fleetshift SA"
+    members:
+    - member:
+        serviceAccount:tycoon-job-account@fleetshift.iam.gserviceaccount.com

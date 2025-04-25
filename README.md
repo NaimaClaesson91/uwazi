@@ -1,6 +1,6 @@
 # Shift skeleton
 
-A new shift for Fleetshift. The manifest lives in [kubernetes/shift.yaml](kubernetes/shift.yaml).
+A new shift for Fleetshift. The manifest lives in [kubernetes/shift.yaml](shifts/template/shift.yaml).
 
 See the status of this shift in Backstage: https://backstage.spotify.net/fleetshift/shifts/ai-migrations
 
