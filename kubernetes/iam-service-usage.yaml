@@ -1,0 +1,19 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: shift-update-metadata-shift-service-usage-viewer
+  namespace: genai-migration-experiment
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: "projects/genai-migration-experiment"
+  bindings:
+  - role: roles/serviceusage.serviceUsageViewer
+    condition:
+      expression: 'resource.name.startsWith("projects/")'
+      title: "View service usage"
+      description: "View service usage information for Fleetshift SA"
+    members:
+    - member: 
+        serviceAccount:tycoon-job-account@fleetshift.iam.gserviceaccount.com

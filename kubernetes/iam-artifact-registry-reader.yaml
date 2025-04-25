@@ -1,0 +1,15 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: shift-update-metadata-shift-fleetshift-ar-viewer-role
+  namespace: genai-migration-experiment
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    external: projects/genai-migration-experiment
+    kind: Project
+  bindings:
+  - role: roles/artifactregistry.reader
+    members:
+    - member:
+        serviceAccount:tycoon-job-account@fleetshift.iam.gserviceaccount.com

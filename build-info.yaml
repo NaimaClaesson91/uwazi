@@ -2,21 +2,13 @@ version: 2
 useBuildIdentity: true
 
 template:
-  type: dockerImage
-  dockerImage:
-    name: ai-migrations
-    gcpProject: genai-migration-experiment
-    tagLatest: true
-    testAction: gcr.io/web-infra/codemod-testrunner:2.1.5_20241016T175004
-    testArgs: []
-    declarativeInfra:
+  type: declarativeInfra
+  declarativeInfra:
       enabled: true
+      experimentalManifestDir: ["kubernetes","shifts"]
 
 environment:
   - ref: ".*"
-    envs:
-      # This envvar will be used by codemod-testrunner
-      CODEMOD_IMAGE: ai-migrations
 
 notifications:
   - ref: refs/heads/master

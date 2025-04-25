@@ -1,0 +1,29 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: ai-migrations
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: ssa
+    spotify.com/description: Central location of AI powered fleet shifts for migrations and other fleet wide changes.
+spec:
+  shiftIdentityOptOut: true
+
+  container:
+    image: gcr.io/genai-migration-experiment/gaggle:20250313093853-463dc7fa
+    args: ["--no-goose-in-docker", "gs://honk-plans/update-service-info.md", "--model=o3-mini"]
+
+  pullRequest:
+    title: Example AI generated Pull Request
+    description: |
+      The is an example AI migration.
+    commitMessage: Honk honk!
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false
+
+  targetRepositories:
+    - repo: starfleet/starfleet-test-service
