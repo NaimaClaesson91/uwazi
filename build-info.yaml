@@ -13,7 +13,7 @@ environment:
       CODEMOD_IMAGE: ai-migrations
 
 overrides:
-  - pipeline: "Master build"
+  - pipeline: "Apply declarative infra resources"
     override: insert-after
     stage: "Build"
     stages:
