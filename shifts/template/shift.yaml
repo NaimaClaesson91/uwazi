@@ -19,7 +19,7 @@ spec:
         'chown -R 1042:3042 /workdir',
       ]
     - name: honk
-      image: gcr.io/genai-migration-experiment/gaggle:20250313093853-463dc7fa
+      image: gcr.io/genai-migration-experiment/gaggle:20250425175913-fe76b0b7
       args: ["--no-goose-in-docker", "gs://honk-plans/update-service-info.md", "--model=o3-mini"]
       nonRootUser: true
 
