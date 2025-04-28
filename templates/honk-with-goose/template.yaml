@@ -1,0 +1,70 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ai-migration-shift-skeleton
+  namespace: default
+  description: Skeleton for creating AI powered migration shifts using Honk (with Goose)
+  title: AI Migration Shift
+  tags: []
+spec:
+  owner: genai-migration-experiment
+  type: shift
+  parameters:
+    - title: About
+      required:
+        - shift_name
+        - description
+        - owner
+      properties:
+        shift_name:
+          # todo: validate name (folder) is not taken
+          title: Shift Name
+          description: The unique name of the shift, only letters, numbers and hyphens are allowed.
+          pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
+          ui:help: "Must be 6 to 30 lowercase letters, digits, or hyphens. It must start with a letter. Trailing hyphens are prohibited."
+          type: string
+        description:
+          title: Description
+          description: Description of the shift, markdown is supported
+          type: string
+        owner:
+          title: Owner
+          description: The Bandmanager group that will own this shift
+          type: string
+          ui:field: UserGroupPickerExtension
+        model:
+          title: Model
+          description: (optional) The AI model to use for the shift. You can always change this later.
+          type: string
+          enum:
+            - o3-mini
+            - gemini-2.0-flash
+          default: o3-mini
+  steps:
+    - id: fetch-shift-template
+      name: Fetch Shift Template
+      action: fetch:template
+      input:
+        url: ./templates/honk-with-goose
+        values:
+          shift_name: ${{ parameters.shift_name }}
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+          model: ${{ parameters.model }}
+    - id: publish:github:pull-request
+      name: Publish Pull Request
+      action: publish:github
+      input:
+        repoUrl: ghe.spotify.net?owner=genai-migration&repo=ai-migrations
+        branchName: create-${{ parameters.shift_name }}
+        commitMessage: Create shift ${{ parameters.shift_name }}
+        title: Create shift ${{ parameters.shift_name }}
+        description: Create shift ${{ parameters.shift_name }}
+        token: ${{ secrets.GHE_TOKEN }}
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Backstage
+        icon: catalog
+        url: https://backstage.spotify.net/components/${{ parameters.component_id }}

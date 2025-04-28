@@ -1,0 +1,44 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: "{{ cookiecutter.shift_name }}"
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: "{{ cookiecutter.owner }}"
+    spotify.com/description: |
+      {{ cookiecutter.description }}
+spec:
+  shiftIdentityOptOut: true
+  containers:
+    - name: chown-non-root
+      image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
+      command: ["sh", "-c", "chown -R 1042:3042 /workdir && ls -la /workdir"]
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
+      args:
+        [
+          "--model={{ cookiecutter.model }}",
+          "--no-goose-in-docker",
+          "run",
+          "gs://honk-plans/{{ cookiecutter.shift_name }}/instructions.md",
+        ]
+      nonRootUser: true
+    - name: chown-root
+      image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
+      command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
+
+  pullRequest:
+    title: "{{ cookiecutter.shift_name }}"
+    description: |
+      {{ cookiecutter.description }}
+    commitMessage: Honk honk!
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false # enable when ready to rollout to customers
+
+  targetRepositorySource:
+    codesearch:
+      query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" owner:"metadata-delivery"'
