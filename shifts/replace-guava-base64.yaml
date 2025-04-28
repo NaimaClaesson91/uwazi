@@ -1,0 +1,53 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: replace-guava-base64
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: marcbr
+    spotify.com/description: Replace usage of Guava Base64 encoding
+spec:
+  shiftIdentityOptOut: true
+  containers:
+    - name: chown-non-root
+      image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
+      command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
+      args:
+        - "plan"
+        - "gs://honk-plans/instructions/replace-guava-base64/instructions.md"
+        - "--examples_path"
+        - "gs://honk-plans/instructions/replace-guava-base64/examples"
+        - "> /workdir/plan.md"
+      nonRootUser: true
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
+      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "/workdir/plan.md"]
+      nonRootUser: true
+    - name: chown-root
+      image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
+      command: ['sh', '-c', "rm /workdir/plan.md && chown -R 0:0 /workdir && ls -la /workdir"]
+
+  pullRequest:
+    title: "ai-migration: Replace Guava Base64 encoder/decoder"
+    description: |
+      Migrating from Guava's BaseEncoding.base64() to the JDK equivalent.
+
+      🪿 This PR has been created by honk based on the [replace-guava-base64 plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/replace-guava-base64)
+    commitMessage: "ai-migration: Replace Guava Base64 encoder/decoder"
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false
+
+  targetRepositorySource:
+      codesearch:
+          query: >-
+            "BaseEncoding.base64()"
+            lang:"Java"
+            lifecycle:"experimental"
+            -repo:"spotify/services-pilot"
+            -repo:"android/client-android"
