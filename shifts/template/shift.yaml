@@ -20,7 +20,7 @@ spec:
       ]
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:20250425175913-fe76b0b7
-      args: ["--no-goose-in-docker", "gs://honk-plans/update-service-info.md", "--model=o3-mini"]
+      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/update-service-info.md"]
       nonRootUser: true
 
   pullRequest:
