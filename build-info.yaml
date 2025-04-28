@@ -12,6 +12,20 @@ environment:
     envs:
       CODEMOD_IMAGE: ai-migrations
 
+overrides:
+  - pipeline: "Master build"
+    override: insert-after
+    stage: "Build"
+    stages:
+      - stage: "Copy plans to GCS"
+        tasks:
+          - task: "bash"
+            steps:
+              - action: 'gcr.io/action-containers/gsutil:5.27-1_20241216T101438@sha256:7112f7f4db66e1e84a7129d7d065b0038c25a30c27748bb721206f6d82875b8b'
+                entrypoint: "/bin/bash"
+                args: [ "-c", 'gsutil cp -R ./instructions/* "gs://honk-plans/instructions/"' ]
+                envs:
+                  USE_TINGLE_BUILD_IDENTITY: 'true'
 
 notifications:
   - ref: refs/heads/master

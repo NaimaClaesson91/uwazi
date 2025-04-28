@@ -1,0 +1,19 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: ai-migrations-iam-honk-plans-writer-ci-cd
+  namespace: genai-migration-experiment
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: "projects/genai-migration-experiment"
+  bindings:
+  - role: roles/storage.objectCreator
+    condition:
+      expression: 'resource.name.startsWith("projects/_/buckets/honk-plans")'
+      title: "Write permissions for tingle honk plans"
+      description: "Write permissions for tingle honk plans"
+    members:
+    - member:
+        serviceAccount:ai-migrations-3246444@xpn-tingle-1.iam.gserviceaccount.com
