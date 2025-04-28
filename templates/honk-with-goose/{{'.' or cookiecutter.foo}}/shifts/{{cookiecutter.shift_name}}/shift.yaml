@@ -22,7 +22,7 @@ spec:
           "--model={{ cookiecutter.model }}",
           "--no-goose-in-docker",
           "run",
-          "gs://honk-plans/{{ cookiecutter.shift_name }}/instructions.md",
+          "gs://honk-plans/instructions/{{ cookiecutter.shift_name }}/instructions.md",
         ]
       nonRootUser: true
     - name: chown-root

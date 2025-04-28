@@ -1,6 +1,6 @@
 {
-  "shift_name": "{{ cookiecutter.shift_name }}",
-  "owner": "{{ cookiecutter.owner }}",
-  "description": "{{ cookiecutter.description }}",
-  "model": "{{ cookiecutter.model }}"
+  "shift_name": "",
+  "owner": "",
+  "description": "",
+  "model": ""
 }
