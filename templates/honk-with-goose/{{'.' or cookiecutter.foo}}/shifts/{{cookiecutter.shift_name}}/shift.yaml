@@ -39,6 +39,11 @@ spec:
     createCodeChanges: true
     createPullRequests: false # enable when ready to rollout to customers
 
-  targetRepositorySource:
-    codesearch:
-      query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" owner:"metadata-delivery"'
+  # For how to write target queries, see:
+  # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
+  targets:
+    where:
+      component:
+        type: service
+        lifecycle: experimental
+        owner: metadata-delivery

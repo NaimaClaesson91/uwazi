@@ -32,6 +32,11 @@ spec:
     createCodeChanges: true
     createPullRequests: false
 
-  targetRepositorySource:
-      codesearch:
-          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot" system:"transcription-platform"'
+  # For how to write target queries, see:
+  # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
+  targets:
+    where:
+      component:
+        type: service
+        lifecycle: experimental
+        system: transcription-platform
