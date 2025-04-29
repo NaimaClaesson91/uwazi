@@ -34,4 +34,4 @@ spec:
 
   targetRepositorySource:
       codesearch:
-          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot"'
+          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot" system:"transcription-platform"'
