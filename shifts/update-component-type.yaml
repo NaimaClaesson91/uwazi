@@ -15,8 +15,8 @@ spec:
       image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
     - name: honk
-      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
-      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/update-component-type/instructions.md"]
+      image: gcr.io/genai-migration-experiment/gaggle:20250429131711-88795ecb
+      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/instructions/update-component-type/instructions.md"]
       nonRootUser: true
     - name: chown-root
       image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
