@@ -14,16 +14,16 @@ spec:
     - name: chown-non-root
       image: gcr.io/spotify-base-images/focal:2025.2-2@sha256:00173375dfaedc4e0e85c59ea7ef0bb4a51cc29df3ac8d0253548725a1ce3c58
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
-    - name: honk
+    - name: honk-plan
       image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
       args:
         - "plan"
         - "gs://honk-plans/instructions/replace-guava-base64/instructions.md"
         - "--examples_path"
         - "gs://honk-plans/instructions/replace-guava-base64/examples"
-        - "> /workdir/plan.md"
+        - "| tee /workdir/plan.md"
       nonRootUser: true
-    - name: honk
+    - name: honk-run
       image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
       args: ["--model=o3-mini", "--no-goose-in-docker", "run", "/workdir/plan.md"]
       nonRootUser: true
