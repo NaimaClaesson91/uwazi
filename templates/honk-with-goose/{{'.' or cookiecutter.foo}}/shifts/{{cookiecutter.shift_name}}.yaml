@@ -46,4 +46,4 @@ spec:
       component:
         type: service
         lifecycle: experimental
-        owner: metadata-delivery
+        system: transcription-platform
