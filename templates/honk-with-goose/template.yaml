@@ -40,13 +40,12 @@ spec:
       name: Generate Shift From Template
       action: fetch:template
       input:
-        url: ./templates/honk-with-goose
-        replace: true # to allow cookiecutter to output into existing folders in the root of this repo
+        url: ./template
+        token: ${{ secrets.GHE_TOKEN }}
         values:
           shift_name: ${{ parameters.shift_name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
-        token: ${{ secrets.GHE_TOKEN }}
     - id: publish
       name: Create Pull Request
       action: publish:github:pull-request

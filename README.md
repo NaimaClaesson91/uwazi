@@ -26,7 +26,13 @@ Note that fleetshift-cli is a hack project that's not officially supported by a 
 
 ### Templates
 
-Test the template generation locally by running:
+Test the template generation locally by:
+
+1. Go to https://backstage.spotify.net/create/template
+2. Click **File** > **Open Template Directory**
+3. Choose e.g. `~/dev/ai-migrations/templates/honk-with-goose`
+4. Select the `template.yaml` file
+5. Fill in the form and click **Review** > **Create**
 
 ```
 ./scripts/generate-from-template.sh templates/honk-with-goose
