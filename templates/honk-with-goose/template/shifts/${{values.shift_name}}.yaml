@@ -3,12 +3,12 @@
 apiVersion: fleetshift.spotify.com/v1
 kind: Shift
 metadata:
-  name: "{{ cookiecutter.shift_name }}"
+  name: "${{ values.shift_name }}"
   namespace: genai-migration-experiment
   annotations:
-    spotify.com/owner: "{{ cookiecutter.owner }}"
+    spotify.com/owner: "${{ values.owner }}"
     spotify.com/description: |
-      {{ cookiecutter.description }}
+      ${{ values.description }}
 spec:
   shiftIdentityOptOut: true
   containers:
@@ -21,7 +21,7 @@ spec:
         [
           "--no-goose-in-docker",
           "run",
-          "gs://honk-plans/instructions/{{ cookiecutter.shift_name }}/instructions.md",
+          "gs://honk-plans/instructions/${{ values.shift_name }}/instructions.md",
         ]
       nonRootUser: true
     - name: chown-root
@@ -29,12 +29,12 @@ spec:
       command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
 
   pullRequest:
-    title: "ai-migration: {{ cookiecutter.shift_name }}"
+    title: "ai-migration: ${{ values.shift_name }}"
     description: |
-      {{ cookiecutter.description }}
+      ${{ values.description }}
 
-      🪿 This PR has been created by honk based on the [{{ cookiecutter.shift_name }} plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/{{ cookiecutter.shift_name }})
-    commitMessage: "{{ cookiecutter.shift_name }}: honk!"
+      🪿 This PR has been created by honk based on the [${{ values.shift_name }} plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/${{ values.shift_name }})
+    commitMessage: "${{ values.shift_name }}: honk!"
 
   rollout:
     createCodeChanges: true
