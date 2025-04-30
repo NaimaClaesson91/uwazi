@@ -32,14 +32,7 @@ spec:
           description: The Bandmanager group that will own this shift
           type: string
           ui:field: UserGroupPickerExtension
-        model:
-          title: Model
-          description: (optional) The AI model to use for the shift. You can always change this later.
-          type: string
-          enum:
-            - o3-mini
-            - gemini-2.0-flash
-          default: o3-mini
+
   steps:
     - id: generate-from-template
       name: Generate Shift From Template
@@ -51,7 +44,6 @@ spec:
           shift_name: ${{ parameters.shift_name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
-          model: ${{ parameters.model }}
     - id: publish
       name: Create Pull Request
       action: publish:github:pull-request

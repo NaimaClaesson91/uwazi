@@ -20,5 +20,4 @@ cookiecutter $1 \
     --output-dir . \
     shift_name=locally-generated-test-shift \
     owner=genai-migration-experiment \
-    description="locally generated test shift" \
-    model=o3-mini
+    description="locally generated test shift"

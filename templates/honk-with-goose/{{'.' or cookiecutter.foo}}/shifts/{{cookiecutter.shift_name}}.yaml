@@ -19,7 +19,6 @@ spec:
       image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
       args:
         [
-          "--model={{ cookiecutter.model }}",
           "--no-goose-in-docker",
           "run",
           "gs://honk-plans/instructions/{{ cookiecutter.shift_name }}/instructions.md",
@@ -33,7 +32,7 @@ spec:
     title: "ai-migration: {{ cookiecutter.shift_name }}"
     description: |
       {{ cookiecutter.description }}
-      
+
       🪿 This PR has been created by honk based on the [{{ cookiecutter.shift_name }} plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/{{ cookiecutter.shift_name }})
     commitMessage: "{{ cookiecutter.shift_name }}: honk!"
 
