@@ -1,0 +1,6 @@
+site_name: AI Migration Shifts
+
+site_description: AI Migration Shifts user guide
+
+nav:
+  - AI Migration Shifts Home: index.md
