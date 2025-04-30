@@ -4,9 +4,6 @@ useBuildIdentity: true
 template:
   type: systemDocs
   systemDocs:
-    documentation:
-      siteName: "AI Migration Shifts"
-      siteDescription: "AI Migration Shifts user guide"
     declarativeInfra:
       enabled: true
       experimentalManifestDir: ["kubernetes","shifts"]
