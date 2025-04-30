@@ -40,7 +40,7 @@ spec:
       name: Generate Shift From Template
       action: fetch:template
       input:
-        url: ./templates/honk-with-goose
+        url: "."
         replace: true # to allow cookiecutter to output into existing folders in the root of this repo
         values:
           shift_name: ${{ parameters.shift_name }}
