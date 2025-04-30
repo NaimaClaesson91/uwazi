@@ -19,9 +19,11 @@ spec:
         shift_name:
           # todo: validate name (folder) is not taken
           title: Shift Name
-          description: The unique name of the shift, only letters, numbers and hyphens are allowed.
+          description: The unique name of the shift, only letters, numbers and hyphens are
+            allowed.
           pattern: "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
-          ui:help: "Must be 6 to 30 lowercase letters, digits, or hyphens. It must start with a letter. Trailing hyphens are prohibited."
+          ui:help: "Must be 6 to 30 lowercase letters, digits, or hyphens. It must start
+            with a letter. Trailing hyphens are prohibited."
           type: string
         description:
           title: Description
@@ -44,6 +46,7 @@ spec:
           shift_name: ${{ parameters.shift_name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
+        token: ${{ secrets.GHE_TOKEN }}
     - id: publish
       name: Create Pull Request
       action: publish:github:pull-request
