@@ -1,6 +1,6 @@
 # AI Migration Shifts
 
-AI Migration Shifts are a way to shift code from one place to another using AI.
+AI Migration Shifts are a way to shift code from one shape to another using AI.
 
 ## Getting started
 
