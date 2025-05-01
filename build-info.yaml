@@ -4,6 +4,9 @@ useBuildIdentity: true
 template:
   type: systemDocs
   systemDocs:
+    gcpProject: genai-migration-experiment
+    reviewDeployments:
+      enabled: true
     declarativeInfra:
       enabled: true
       experimentalManifestDir: ["kubernetes","shifts"]
