@@ -9,6 +9,10 @@ metadata:
 spec:
   owner: genai-migration-experiment
   type: shift
+  EXPERIMENTAL_formDecorators:
+    - id: ghe-token
+      input:
+        scope: repo
   parameters:
     - title: About
       required:
