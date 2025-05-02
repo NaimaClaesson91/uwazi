@@ -18,8 +18,8 @@ environment:
 
 overrides:
   - pipeline: "Main build"
-    override: insert-after
-    stage: ".*"
+    override: insert-before
+    stage: "Apply declarative infra resources"
     stages:
       - stage: "Copy plans to GCS"
         tasks:
