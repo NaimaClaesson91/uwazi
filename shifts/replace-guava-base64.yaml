@@ -39,6 +39,6 @@ spec:
       allMatch:
         - component:
             lifecycle: experimental
-        - subPath:
+        - subpath:
             at: "*.java"
             withContentsMatching: "BaseEncoding.base64()"
