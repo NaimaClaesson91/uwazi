@@ -17,9 +17,9 @@ environment:
       CODEMOD_IMAGE: ai-migrations
 
 overrides:
-  - pipeline: "Apply declarative infra resources"
+  - pipeline: "Main build"
     override: insert-after
-    stage: "Main build"
+    stage: ".*"
     stages:
       - stage: "Copy plans to GCS"
         tasks:
