@@ -15,7 +15,7 @@ spec:
       image: gcr.io/spotify-base-images/noble:2024.12-1@sha256:d49f79f72b49a99e96eb6426a278eaff3a26657d3ed434f4a04ff00a3f7315e3
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
     - name: honk
-      image: gcr.io/genai-migration-experiment/gaggle:20250502125451-e9d1f865
+      image: gcr.io/genai-migration-experiment/gaggle:20250502131748-d6387117
       args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/instructions/update-component-type/instructions.md"]
       nonRootUser: true
     - name: chown-root
@@ -34,4 +34,4 @@ spec:
 
   targetRepositorySource:
       codesearch:
-          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot" system:"transcription-platform"'
+          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot" owner:"fabric"'
