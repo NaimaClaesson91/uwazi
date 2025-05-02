@@ -3,7 +3,7 @@
 apiVersion: fleetshift.spotify.com/v1
 kind: Shift
 metadata:
-  name: replace-guava-base64
+  name: replace-base64-guava
   namespace: genai-migration-experiment
   annotations:
     spotify.com/owner: marcbr
@@ -16,7 +16,7 @@ spec:
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:latest
-      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "--examples", "gs://honk-plans/instructions/replace-guava-base64/examples", "gs://honk-plans/instructions/replace-guava-base64/instructions.md"]
+      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "--examples", "gs://honk-plans/instructions/replace-base64-guava/examples", "gs://honk-plans/instructions/replace-base64-guava/instructions.md"]
       nonRootUser: true
     - name: chown-root
       image: gcr.io/spotify-base-images/noble:2024.12-1@sha256:d49f79f72b49a99e96eb6426a278eaff3a26657d3ed434f4a04ff00a3f7315e3
@@ -27,7 +27,7 @@ spec:
     description: |
       Migrating from Guava's BaseEncoding.base64() to the JDK equivalent.
 
-      🪿 This PR has been created by honk based on the [replace-guava-base64 plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/replace-guava-base64)
+      🪿 This PR has been created by honk based on the [replace-base64-guava plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/replace-base64-guava)
     commitMessage: "ai-migration: Replace Guava Base64 encoder/decoder"
 
   rollout:
