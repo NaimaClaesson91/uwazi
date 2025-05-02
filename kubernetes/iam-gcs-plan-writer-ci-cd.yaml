@@ -9,7 +9,7 @@ spec:
     kind: Project
     external: "projects/genai-migration-experiment"
   bindings:
-  - role: roles/storage.objectCreator
+  - role: roles/storage.objectUser
     condition:
       expression: 'resource.name.startsWith("projects/_/buckets/honk-plans")'
       title: "Write permissions for tingle honk plans"
