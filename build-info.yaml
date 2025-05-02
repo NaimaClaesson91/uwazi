@@ -19,7 +19,7 @@ environment:
 overrides:
   - pipeline: "Apply declarative infra resources"
     override: insert-after
-    stage: "Build"
+    stage: "Main build"
     stages:
       - stage: "Copy plans to GCS"
         tasks:
