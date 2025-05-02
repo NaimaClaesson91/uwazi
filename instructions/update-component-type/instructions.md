@@ -36,7 +36,6 @@ You should not give me a plan for this task, instead you should perform update t
 3. When you have updated the service-info.yaml file, you must validate the syntax of the yaml file
    by using running `yq file.yaml >/dev/null`. The tool will output error if the syntax is invalid.
    Otherwise, it will output nothing. If the syntax is invalid, you should fix it before finishing.
-4. When you are done with the task, you should output the reasoning for why you chose the `component_type`to a file in /pr/description. Explicitly state that you are "Honk, an AI powered fleet-shift".
 
 ## Pointers
 - You may ONLY change the field `component_type` in the service-info.yaml file. You MUST not change anything else.
