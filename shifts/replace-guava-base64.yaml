@@ -14,18 +14,9 @@ spec:
     - name: chown-non-root
       image: gcr.io/spotify-base-images/noble:2024.12-1@sha256:d49f79f72b49a99e96eb6426a278eaff3a26657d3ed434f4a04ff00a3f7315e3
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
-    - name: honk-plan
-      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
-      args:
-        - "plan"
-        - "gs://honk-plans/instructions/replace-guava-base64/instructions.md"
-        - "--examples_path"
-        - "gs://honk-plans/instructions/replace-guava-base64/examples"
-        - "| tee /workdir/plan.md"
-      nonRootUser: true
-    - name: honk-run
-      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
-      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "/workdir/plan.md"]
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:latest
+      args: ["--model=o3-mini", "--no-goose-in-docker", "run", "--examples", "gs://honk-plans/instructions/replace-guava-base64/examples", "gs://honk-plans/instructions/replace-guava-base64/instructions.md"]
       nonRootUser: true
     - name: chown-root
       image: gcr.io/spotify-base-images/noble:2024.12-1@sha256:d49f79f72b49a99e96eb6426a278eaff3a26657d3ed434f4a04ff00a3f7315e3
