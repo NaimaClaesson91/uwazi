@@ -2,8 +2,12 @@ version: 2
 useBuildIdentity: true
 
 template:
-  type: declarativeInfra
-  declarativeInfra:
+  type: systemDocs
+  systemDocs:
+    gcpProject: genai-migration-experiment
+    reviewDeployments:
+      enabled: true
+    declarativeInfra:
       enabled: true
       experimentalManifestDir: ["kubernetes","shifts"]
 

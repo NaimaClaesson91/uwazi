@@ -1,3 +1,5 @@
 test-output
 locally-generated-test-shift*
 .idea
+docs/style.css # techdocs generated file
+mkdocs-effective.yml~ # techdocs generated file
