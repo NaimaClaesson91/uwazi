@@ -32,6 +32,11 @@ spec:
     createCodeChanges: true
     createPullRequests: false
 
-  targetRepositorySource:
-      codesearch:
-          query: 'ct:"service" lifecycle:"experimental" lang:"YAML" file:"service-info.yaml" -repo:"spotify/services-pilot" owner:"fabric"'
+  targets:
+    where:
+      allMatch:
+        - subpath:
+            at: "**/service-info.yaml"
+        - component:
+            owner: mimir
+            type: service
