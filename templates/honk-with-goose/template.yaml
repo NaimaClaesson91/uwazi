@@ -13,6 +13,7 @@ spec:
     - id: ghe-token
       input:
         scope: repo
+        secretName: GHE_TOKEN
   parameters:
     - title: About
       required:
