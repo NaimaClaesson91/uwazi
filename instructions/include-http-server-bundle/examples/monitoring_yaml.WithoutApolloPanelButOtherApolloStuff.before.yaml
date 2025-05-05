@@ -1,0 +1,151 @@
+# Monitoring configuration via MMA
+# https://backstage.spotify.net/docs/default/component/mma-docs/
+metadata:
+  schemaVersion: 5
+plugins:
+  templates:
+    - src: foreground-experiences/fex-mma
+      release: master
+    - src: monitoring/mma-core-templates
+      release: master
+components:
+  watch-feed-view:
+    - name: "[watch-feed-view] Dashboard"
+      default_columns: 4
+      default_height: 6
+      alerting_enabled: true
+      servicelevels:
+        - template: apollo/failed-requests
+          target_availability: 0.9995
+        - template: apollo/latency
+          target_availability: 0.9995
+          threshold: 1000
+      panels:
+        # Key metrics
+        - template: fex-mma/key-metrics
+          type: bundle
+          application: watch-feed-view
+          min_pods: 2
+          max_pods: 75
+          include_hm: true
+          error_threshold_pct: 10
+          p99_threshold_ms: 2500
+          action: pagerduty
+          severity: warning
+          exclude_endpoints: ["GET:/v1/feed/.*"]
+
+          # Incoming traffic
+        - template: fex-mma/hermes-server
+          type: bundle
+          application: watch-feed-view
+          role: watchfeedview
+          error_threshold_rps: 10
+          threshold_ms: 700
+          action: pagerduty
+          severity: warning
+          exclude_endpoints: ["GET:/v1/feed/.*"]
+        - template: fex-mma/common/generic-counter
+          title: Incoming requests per feed type (on the POST endpoint)
+          application: watch-feed-view
+          metric_name: feed_request
+          group_by: "feed_id"
+        - template: fex-mma/common/generic-timer
+          application: watch-feed-view
+          title: Request latency per feed type (p99)
+          metric_name: feed_request_latency
+          filters:
+            - stat="p99"
+          group_by: "feed_id"
+        - template: fex-mma/common/generic-counter
+          title: Items dropped during decoration
+          description: Items that are served by the content source (section) but dropped during the late-decoration and eventually not served to users.
+          application: watch-feed-view
+          metric_name: dropped_items_in_decoration
+          group_by: "feed_id"
+
+          # Outgoing Hermes Traffic
+        - template: fex-mma/hermes-client
+          type: bundle
+          application: watch-feed-view
+          role: watchfeedview
+          error_threshold_rate: 10
+          outgoing_threshold_n: 90
+          rate_limit:
+            enabled: true
+            metadata: 0.8
+          action: pagerduty
+          severity: warning
+
+          # Outgoing gRPC Traffic
+        - template: fex-mma/grpc-client
+          type: bundle
+          error_threshold_rate: 10
+          action: pagerduty
+          severity: warning
+
+          # Caffeine cache
+        - template: caffeine
+          type: bundle
+          collapsed: true
+          title: "Caffeine cache metrics"
+
+          # Service auth
+        - template: service-auth
+          type: bundle
+          collapse_all_rows: true
+          include_hm: true
+          grpc_exclude_services:
+            - grpc.health.v1.Health
+            - grpc.reflection.v1alpha.ServerReflection
+            - com.spotify.rerouting.grpc.ReroutingService
+
+            # JVM
+        - template: jvm
+          type: bundle
+          collapse_all_rows: true
+
+          # Kubernetes
+        - template: fex-mma/kubernetes
+          type: bundle
+          kubernetes_namespace: foreground-experiences
+          kubernetes_container: watch-feed-view
+          action: pagerduty
+
+          # Kubernetes quotas
+        - template: k8s/namespace-resource-quotas
+          type: bundle
+          collapse_all_rows: true
+          namespace: foreground-experiences
+          cpu_request_alert: 200     # 10% of 2000
+          cpu_limit_alert: 400     # 10% of 40000
+          memory_request_alert: 800000000000     # 800Gb, 10% of 8000
+          memory_limit_alert: 800000000000     # 800Gb, 10% of 8000
+          action: pagerduty
+          override:
+            all:
+              alert_rule_tags:
+                severity: warning
+
+            # Synthetic tests
+            #- type: row
+            #  title: Synthetic tests
+            #  collapsed: true
+            #  columns: 6
+            #- template: synthetics/test-count
+            #  test_name: discovery-feed-endpoint-check
+            #- template: synthetics/test-successful-response
+            #  test_name: discovery-feed-endpoint-check
+            #- template: synthetics/test-errors
+            #  test_name: discovery-feed-endpoint-check
+            #  threshold: 2
+            #  window_value: 5
+            #  message: The synthetic tests are failing.
+            #  action: pagerduty
+            #  alert_rule_tags:
+            #    severity: warning
+            #- template: synthetics/test-error-ratio
+            #  test_name: discovery-feed-endpoint-check
+            #- template: synthetics/test-latency
+            #  test_name: discovery-feed-endpoint-check
+            #- template: synthetics/test-timeouts
+            #  test_name: discovery-feed-endpoint-check
