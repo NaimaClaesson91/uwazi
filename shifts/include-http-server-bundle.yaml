@@ -19,6 +19,7 @@ spec:
       image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
       args:
         [
+          "--model=o3-mini",
           "--no-goose-in-docker",
           "run",
           "--examples", "gs://honk-plans/instructions/include-http-server-bundle/examples",
@@ -45,4 +46,4 @@ spec:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
   targetRepositorySource:
     codesearch:
-      query: '"withModule\\(HttpServerModule" ct:"service" lang:"Java" repo:"foreground-experiences/watch-feed-view"'
+      query: '"withModule\\(HttpServerModule" ct:"service" lang:"Java"'
