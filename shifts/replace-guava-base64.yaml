@@ -32,7 +32,7 @@ spec:
 
   rollout:
     createCodeChanges: true
-    createPullRequests: false
+    createPullRequests: true
 
   targets:
     where:
