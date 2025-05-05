@@ -1,0 +1,50 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: "include-http-server-bundle"
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: "abs"
+    spotify.com/description: |
+      Adds http server panels to monitoring.yaml
+spec:
+  shiftIdentityOptOut: true
+  containers:
+    - name: chown-non-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      command: ["sh", "-c", "chown -R 1042:3042 /workdir && ls -la /workdir"]
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
+      args:
+        [
+          "--no-goose-in-docker",
+          "run",
+          "gs://honk-plans/instructions/include-http-server-bundle/instructions.md",
+        ]
+      nonRootUser: true
+    - name: chown-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
+
+  pullRequest:
+    title: "ai-migration: include-http-server-bundle"
+    description: |
+      Adds http server panels to monitoring.yaml
+
+      🪿 This PR has been created by honk based on the [include-http-server-bundle plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/include-http-server-bundle)
+    commitMessage: "include-http-server-bundle: honk!"
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false # enable when ready to rollout to customers
+
+  # For how to write target queries, see:
+  # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
+  targets:
+    where:
+      component:
+        type: service
+        lifecycle: experimental
+        system: transcription-platform
