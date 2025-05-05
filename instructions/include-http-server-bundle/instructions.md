@@ -34,7 +34,7 @@ THERE WILL ONLY BE ONE SUCH YAML BLOCK PER FILE.
 First find all `monitoring-info.yaml` files in the working directory using this command:
 
 ```
-find . -name monitoring-info.yaml
+find . -name monitoring-info.yaml -exec grep --files-with-matches "template: apollo" {} \;
 ```
 
 Then for every file that you have found apply the changes described above.
