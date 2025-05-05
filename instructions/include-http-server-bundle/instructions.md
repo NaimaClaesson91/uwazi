@@ -22,6 +22,15 @@ you would change it to be:
 
 You only need to add this one key do not change, add, or remove any other YAML.
 
+YOU MUST ONLY CHANGE YAML BLOCKS WITH THE KEYS:
+
+```
+- template: apollo
+  type: bundle
+```
+
+THERE WILL ONLY BE ONE SUCH YAML BLOCK PER FILE.
+
 First find all `monitoring-info.yaml` files in the working directory using this command:
 
 ```

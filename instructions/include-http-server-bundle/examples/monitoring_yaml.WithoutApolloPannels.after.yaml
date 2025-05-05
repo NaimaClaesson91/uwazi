@@ -1,0 +1,15 @@
+# Monitoring configuration via MMA.
+# Documentation available at https://backstage.spotify.net/docs/default/component/mma-docs/.
+
+metadata:
+  schemaVersion: 5
+components:
+  weaver-service:
+    - panels:
+        - template: anothertemplate
+          type: bundle
+        - template: yetanothertemplate
+          type: bundle
+  templates:
+    - src: monitoring/mma-core-templates-prom
+      release: "master"
