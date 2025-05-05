@@ -21,6 +21,7 @@ spec:
         [
           "--no-goose-in-docker",
           "run",
+          "--examples", "gs://honk-plans/instructions/include-http-server-bundle/examples",
           "gs://honk-plans/instructions/include-http-server-bundle/instructions.md",
         ]
       nonRootUser: true
@@ -42,9 +43,6 @@ spec:
 
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
-  targets:
-    where:
-      component:
-        type: service
-        lifecycle: experimental
-        system: transcription-platform
+  targetRepositorySource:
+    codesearch:
+      query: '"withModule\\(HttpServerModule" ct:"service" lang:"Java" repo:"foreground-experiences/watch-feed-view"'
