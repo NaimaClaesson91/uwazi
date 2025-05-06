@@ -7,19 +7,22 @@ metadata:
   namespace: genai-migration-experiment
   annotations:
     spotify.com/owner: ssa
-    spotify.com/description: Central location of AI powered fleet shifts for migrations and other fleet wide changes.
+    spotify.com/description: Update of the component type. Update made by the AI agent Honk.
 spec:
   shiftIdentityOptOut: true
   containers:
+      # Honk does not run as root. First we own the workdir to make sure we can write to it.
     - name: chown-non-root
-      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      image: cgr.dev/chainguard/bash:latest # Chainguard is vetted by security. They provide images with CVE scanning.
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
+      # This is where honk runs.
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/instructions/update-component-type/instructions.md"]
       nonRootUser: true
+      # Move ownership of the workdir back to root. git needs this.
     - name: chown-root
-      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      image: cgr.dev/chainguard/bash:latest # Chainguard is vetted by security. They provide minimal images with CVE scanning.
       command: ['sh', '-c', "chown -R 0:0 /workdir && ls -la /workdir"]
 
   pullRequest:
@@ -38,5 +41,4 @@ spec:
         - subpath:
             at: "**/service-info.yaml"
         - component:
-            owner: mimir
             type: service
