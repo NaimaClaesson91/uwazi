@@ -56,3 +56,6 @@ spec:
         - subpath:
             at: "**/*.java"
             withContentsMatching: "BaseEncoding.base64()"
+    unless:
+      inList:
+        - repository: genai-migration/ai-migrations
