@@ -54,4 +54,15 @@ Next also check the values of the `resourceQuota.hard` key. We have default valu
       limits.memory:   500Gi,
 ```
 
-If the values of all 4 of these keys in the file fall below the default values, remove the `resourceQuota` key entirely. 
+If the values of all 4 of these keys in the file fall below the default values, remove the `resourceQuota` key entirely. So the above example, after removing both the `roles` key and the `resourceQuota` key (if applicable) would look as follows:
+
+```
+apiVersion: runtime.spotify.com/v1alpha1
+kind: Runtime
+metadata:
+  namespace: some-gcp-project
+  name: some-workload-namespace
+spec:
+  owners:
+    - sample-squad@iam.spotify.com
+```
