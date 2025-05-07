@@ -52,7 +52,9 @@ spec:
         - component:
             type: service
             lifecycle: experimental
-            system: transcription-platform
+            # Uncomment to target only a specific system or owner
+            # system: honk
+            # owner: honk-users
         - subpath:
             at: "**/*.java"
             withContentsMatching: "BaseEncoding.base64()"
