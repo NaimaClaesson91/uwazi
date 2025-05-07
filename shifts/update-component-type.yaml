@@ -11,18 +11,21 @@ metadata:
 spec:
   shiftIdentityOptOut: true
   containers:
+  
       # Honk does not run as root. First we own the workdir to make sure we can write to it.
     - name: chown-non-root
-      image: cgr.dev/chainguard/bash:latest # Chainguard is vetted by security. They provide images with CVE scanning.
+      image: gcr.io/spotify-base-images/noble:2025.2-2
       command: ['sh', '-c', "chown -R 1042:3042 /workdir && ls -la /workdir"]
+      
       # This is where honk runs.
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args: ["--model=o3-mini", "--no-goose-in-docker", "run", "gs://honk-plans/instructions/update-component-type/instructions.md"]
       nonRootUser: true
+      
       # Move ownership of the workdir back to root. git needs this.
     - name: chown-root
-      image: cgr.dev/chainguard/bash:latest # Chainguard is vetted by security. They provide minimal images with CVE scanning.
+      image: gcr.io/spotify-base-images/noble:2025.2-2
       command: ['sh', '-c', "chown -R 0:0 /workdir && ls -la /workdir"]
 
   pullRequest:
