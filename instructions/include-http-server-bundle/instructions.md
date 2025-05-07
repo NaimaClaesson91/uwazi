@@ -45,7 +45,33 @@ find . -name monitoring-info.yaml -exec grep -E --files-with-matches "template: 
 
 Then for every file that you have found apply the changes described above.
 
+# Verifying you have made the right changes
+
 To verify you have done the correct thing run the following command:
+
+```
+git diff | grep "+ " | wc -l
+```
+
+If you have made the correct changes the output should be:
+
+```
+1
+```
+
+If that is true then run:
+
+```
+git diff | grep "^- " | wc -l
+```
+
+If you have made the correct changes the output should be:
+
+```
+0
+```
+
+Finally, run:
 
 ```
 git diff
@@ -59,4 +85,10 @@ The only change you should see per file in the diff output is:
 
 With minor variations in whitespace.
 
-If you see other lines added, removed or changed YOU HAVE MADE A MISTAKE AND MUST NOT COMMIT.
+If any of these verifications fail then undo your changes by:
+
+```
+git checkout -- .
+```
+
+And try again. Do not try more than three times.
