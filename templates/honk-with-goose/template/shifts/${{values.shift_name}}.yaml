@@ -43,10 +43,10 @@ spec:
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
   targets:
-    # Uncomment to target just one repo for testing purposes:
-    # in:
-    #   repositories:
-    #     - org/repo
+    # Use to target just one repo for testing purposes:
+    in:
+      repositories:
+        - starfleet/starfleet-test-service
     where:
       allMatch:
         - component:
