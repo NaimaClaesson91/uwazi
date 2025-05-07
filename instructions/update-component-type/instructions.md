@@ -23,7 +23,7 @@ You should not give me a plan for this task, instead you should perform update t
 
 1. Start by getting the relevant input by running the command:
    ```bash
-   find . -type f \( -name "*.md" -o -name "*.yaml" -o -name "*.sh" -o -name "*.java" -o -name "*.python" -o -name "*.ts" \) ! -path "*/target/*" -exec sh -c 'head -n 100 "$1"' _ {} \; | head -n 3000
+   find . -type f \( -name "*.md" -o -name "*.yaml" -o -name "*.sh" -o -name "*.java" -o -name "*.python" -o -name "*.ts" \) ! -path "*/target/*" -exec sh -c 'head -n 100 "$1"' _ {} \; | head -n 1500
    ```
 2. Use the content from the bash command to build an understanding of what this software component does.
 3. Update the `component_type` fields in the service-info.yaml file. For the `component_type` field, you should choose one of the following values:
@@ -41,3 +41,17 @@ You should not give me a plan for this task, instead you should perform update t
 - You may ONLY change the field `component_type` in the service-info.yaml file. You MUST not change anything else.
 - Do NOT edit or remove any comments.
 - You may update the `component_type` field to any of the values listed above.
+
+## Validation
+You must validate your changes before terminating. To validate run:
+
+```bash
+git diff --numstat
+```
+
+This command should return:
+```
+1       1       service-info.yaml
+```
+
+If it does not you must ´git reset --hard´ and restart the task.

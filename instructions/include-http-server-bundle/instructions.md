@@ -22,7 +22,8 @@ panels:
   # ... all of the yaml that was previously present
 ```
 
-You only need to add this one key do not change, add, or remove any other YAML.
+YOU MUST ONLY ADD THE LINE `include_http_server: true` MAKE NO OTHER CHANGES. DO NOT MODIFY ANYTHING
+ELSE IN THE FILE.
 
 YOU MUST ONLY CHANGE YAML BLOCKS IN panels WITH THE EXACT KEY/value `template: apollo`:
 
@@ -44,4 +45,50 @@ find . -name monitoring-info.yaml -exec grep -E --files-with-matches "template: 
 
 Then for every file that you have found apply the changes described above.
 
+# Verifying you have made the right changes
 
+To verify you have done the correct thing run the following command:
+
+```
+git diff | grep "+ " | wc -l
+```
+
+If you have made the correct changes the output should be:
+
+```
+1
+```
+
+If that is true then run:
+
+```
+git diff | grep "^- " | wc -l
+```
+
+If you have made the correct changes the output should be:
+
+```
+0
+```
+
+Finally, run:
+
+```
+git diff
+```
+
+The only change you should see per file in the diff output is:
+
+```
++      include_http_server: true
+```
+
+With minor variations in whitespace.
+
+If any of these verifications fail then undo your changes by:
+
+```
+git checkout -- .
+```
+
+And try again. Do not try more than three times.
