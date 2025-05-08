@@ -65,3 +65,5 @@ spec:
   owners:
     - sample-squad@iam.spotify.com
 ```
+
+If you end up removing the `resourceQuota` replace it with a comment to tell the user what the default `resourceQuota` is and to not set anything less than that.
