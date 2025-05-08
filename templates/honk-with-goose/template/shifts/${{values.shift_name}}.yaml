@@ -43,8 +43,21 @@ spec:
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
   targets:
+    # Use to target just one repo for testing purposes:
+    in:
+      repositories:
+        - starfleet/starfleet-test-service
     where:
-      component:
-        type: service
-        lifecycle: experimental
-        system: transcription-platform
+      allMatch:
+        - component:
+            type: service
+            lifecycle: experimental
+            # Uncomment to target only a specific system or owner
+            # system: honk
+            # owner: honk-users
+        - subpath:
+            at: "**/*.java"
+            withContentsMatching: "BaseEncoding.base64()"
+    unless:
+      inList:
+        - repository: genai-migration/ai-migrations
