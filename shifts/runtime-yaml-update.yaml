@@ -42,9 +42,7 @@ spec:
 
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
-  targets:
-    where:
-      component:
-        type: service
-        lifecycle: experimental
-        system: transcription-platform
+  targetRepositorySource:
+    codesearch:
+      query: |
+        roles file:runtime.yaml owner:"warpspeed"
