@@ -23,8 +23,7 @@ spec:
       limits.cpu: "700"
       limits.memory: 500Gi
 ```
-
-If you detect a yaml file of type `kind: Runtime` in the repository, remove any occurence of the `roles` key in this file. So the above example would then look like:
+Only perform these actions on yaml files, and only on yaml files that have on top level the `kind` key set to `Runtime`, so `kind: Runtime`. If you detect a yaml file of type `kind: Runtime` in the repository, remove any occurence of the `roles` key (and its values) in this file. So the above example would then look like:
 
 ```
 apiVersion: runtime.spotify.com/v1alpha1
@@ -54,7 +53,7 @@ Next also check the values of the `resourceQuota.hard` key. We have default valu
       limits.memory:   500Gi,
 ```
 
-If the values of all 4 of these keys in the file fall below the default values, remove the `resourceQuota` key entirely. So the above example, after removing both the `roles` key and the `resourceQuota` key (if applicable) would look as follows:
+If the values of all 4 of these keys in the file fall below the default values or are equal to them, remove the `resourceQuota` key entirely. So the above example, after removing both the `roles` key and the `resourceQuota` key (if applicable) would look as follows:
 
 ```
 apiVersion: runtime.spotify.com/v1alpha1
@@ -66,3 +65,5 @@ spec:
   owners:
     - sample-squad@iam.spotify.com
 ```
+
+If you end up removing the `resourceQuota` replace it with a comment to tell the user what the default `resourceQuota` is and to not set anything less than that.
