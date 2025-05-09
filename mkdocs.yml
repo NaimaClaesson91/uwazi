@@ -4,3 +4,4 @@ site_description: AI Migration Shifts user guide
 
 nav:
   - AI Migration Shifts Home: index.md
+  - Configuring your AI-Shift: config.md
