@@ -17,6 +17,17 @@ To get started with AI Migration Shifts, follow these steps:
 3. **Refer** to the Honk documentation for more information on how to Honk 🪿:
     - https://backstage.spotify.net/docs/default/component/honk
 
+## Trying out your shift
 
-!!! Tip "Join the #ai-assisted-migrations"
+You can try a migration against a repo, before committing to master, using [fleetshift-cli]:
+
+```shell
+$ npm install -g @spotify-internal/fleetshift-cli --registry https://artifactory.spotify.net/artifactory/api/npm/virtual-npm
+$ fleetshift run -m shifts/replace-guava-base64.yaml --repo iam/auth-common --nobuild
+```
+
+!!! Tip "Join the #ai-assisted-migrations channel"
     If you have any questions or need help, join us in the [#ai-assisted-migrations](https://spotify.enterprise.slack.com/archives/C084MKZRPCH) channel!
+
+
+[fleetshift-cli]: https://ghe.spotify.net/charud/fleetshift-cli
