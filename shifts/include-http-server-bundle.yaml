@@ -21,8 +21,12 @@ spec:
         [
           "--model=o3-mini",
           "--no-goose-in-docker",
+          "--agent=duck",
+          "--verify-command=git diff --numstat",
+          "--verify-pattern=1       0",
           "run",
           "--examples", "gs://honk-plans/instructions/include-http-server-bundle/examples",
+          "--git-grep=git grep -l apollo -- '*monitoring-info.yaml'",
           "gs://honk-plans/instructions/include-http-server-bundle/instructions.md",
         ]
       nonRootUser: true
