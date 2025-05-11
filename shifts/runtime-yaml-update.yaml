@@ -8,7 +8,7 @@ metadata:
   annotations:
     spotify.com/owner: "warpspeed"
     spotify.com/description: |
-      This shift updates the runtime yaml in service repos, in accordance with the runtime crd changes. Currently it will remove the `roles` key and the `resourceQuota` key (if the resourceQuota falls within the defaults). 
+            This shift updates the runtime yaml in service repos, in accordance with the runtime crd changes. Currently it will remove the `roles` key and the `resourceQuota` key (if the resourceQuota falls within the defaults).
 spec:
   shiftIdentityOptOut: true
   containers:
@@ -31,7 +31,12 @@ spec:
   pullRequest:
     title: "ai-migration: runtime-yaml-update"
     description: |
-      This shift updates the runtime yaml in service repos, in accordance with the runtime crd changes. Currently it will remove the `roles` key and the `resourceQuota` key (if the resourceQuota falls within the defaults). 
+      This shift updates the runtime yaml in service repos, in accordance with the runtime crd changes. 
+      
+      Currently it will remove the `roles` key and the `resourceQuota` key (if the resourceQuota falls within the defaults). 
+
+      The `roles` key is being removed, due to the deprecation of celo secrets, as that was the only usage of it.
+      The `resourceQuota` key may be removed, if the set `resourceQuota` falls below the default values.
 
       🪿 This PR has been created by honk based on the [runtime-yaml-update plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/runtime-yaml-update)
     commitMessage: "runtime-yaml-update: honk!"
