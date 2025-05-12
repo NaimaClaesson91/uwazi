@@ -61,3 +61,5 @@ spec:
     unless:
       inList:
         - repository: genai-migration/ai-migrations
+      component:
+        - id: services-pilot
