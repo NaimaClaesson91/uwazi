@@ -80,6 +80,7 @@ spec:
             - repository: genai-migration/ai-migrations
               directory: "/" # Setting the directory to "/" indicates the root of the repo. This is the default value and is only added here for clarity.  
 
-        # - the directory is a root of a component which has the folowing attributes:
+        # - the directory is a root of a component which has the following attributes:
         - component:
+            # exclude the monorepo component itself (but not components _within_ the monorepo)
             id: services-pilot
