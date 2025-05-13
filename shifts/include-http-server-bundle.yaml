@@ -22,6 +22,7 @@ spec:
           "--model=o3-mini",
           "--no-goose-in-docker",
           "--agent=duck",
+          "--no-format",
           "--verify-command=git diff --stat",
           "--verify-pattern=monitoring-info.yaml | 1 +",
           "run",
@@ -44,7 +45,7 @@ spec:
 
   rollout:
     createCodeChanges: true
-    createPullRequests: false # enable when ready to rollout to customers
+    createPullRequests: true # enable when ready to rollout to customers
 
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
