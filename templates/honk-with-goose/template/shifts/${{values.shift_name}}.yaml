@@ -44,7 +44,7 @@ spec:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
   targets:
 
-    # Include targets inside just one repo for testing purposes.
+    # Include targets inside a single repo only for testing purposes.
     # When this field is set, repositories that do not appear here, do not exist as far as the specific shift is concerned:
     in:
       repositories:
