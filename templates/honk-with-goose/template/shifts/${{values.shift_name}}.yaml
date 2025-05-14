@@ -43,23 +43,44 @@ spec:
   # For how to write target queries, see:
   # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
   targets:
-    # Use to target just one repo for testing purposes:
+
+    # Include targets inside a single repo only for testing purposes.
+    # When this field is set, repositories that do not appear here, do not exist as far as the specific shift is concerned:
     in:
       repositories:
         - starfleet/starfleet-test-service
+
+    # Only target directories matching...
     where:
+
+      # ..._all_ of the folowing conditions (logical AND):
       allMatch:
+
+        # - the directory is a root of a component which has the following attributes (by _root_ here we mean the location of the info.yaml for the component):
         - component:
             type: service
             lifecycle: experimental
             # Uncomment to target only a specific system or owner
             # system: honk
             # owner: honk-users
+            
+        # - anywhere under the directory there is at least one file that matches the glob pattern "**/*.java" and contains the substring "BaseEncoding.base64()"
         - subpath:
             at: "**/*.java"
             withContentsMatching: "BaseEncoding.base64()"
+
+    # Always exclude directories matching...
     unless:
-      inList:
-        - repository: genai-migration/ai-migrations
-      component:
-        - id: services-pilot
+
+      # ..._any_ of the following conditions (logical OR):
+      anyMatch:
+
+        # - the directory is in the list (note: this is a list of _directories_):
+        - inList:
+            - repository: genai-migration/ai-migrations
+              directory: "/" # Setting the directory to "/" indicates the root of the repo. This is the default value and is only added here for clarity.  
+
+        # - the directory is a root of a component which has the following attributes:
+        - component:
+            # exclude the monorepo component itself (but not components _within_ the monorepo)
+            id: services-pilot
