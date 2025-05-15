@@ -27,7 +27,8 @@ $ fleetshift run -m shifts/replace-guava-base64.yaml --repo iam/auth-common --no
 ```
 
 !!! Tip "Join the #ai-assisted-migrations channel"
-    If you have any questions or need help, join us in the [#ai-assisted-migrations](https://spotify.enterprise.slack.com/archives/C084MKZRPCH) channel!
+If you have any questions or need help, join us in
+the [#ai-assisted-migrations](https://spotify.enterprise.slack.com/archives/C084MKZRPCH) channel!
 
 
 [fleetshift-cli]: https://ghe.spotify.net/charud/fleetshift-cli

@@ -10,13 +10,18 @@ metadata:
     spotify.com/description: |
       ${{ values.description }}
 spec:
+  # We run under the standard fleetshift service account. This simplifies permission managment.
   shiftIdentityOptOut: true
   containers:
+
+    # Honk does not run as root. First we own the workdir to make sure we can write to it.
     - name: chown-non-root
-      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      image: gcr.io/spotify-base-images/noble:2025.2-2
       command: ["sh", "-c", "chown -R 1042:3042 /workdir && ls -la /workdir"]
+
+    # This is where honk runs. Configure Honk in args.
     - name: honk
-      image: gcr.io/genai-migration-experiment/gaggle:20250428120258-cdb2c922
+      image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
         [
           "--no-goose-in-docker",
@@ -24,8 +29,10 @@ spec:
           "gs://honk-plans/instructions/${{ values.shift_name }}/instructions.md",
         ]
       nonRootUser: true
+
+    # Move ownership of the workdir back to root. git needs this.
     - name: chown-root
-      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      image: gcr.io/spotify-base-images/noble:2025.2-2
       command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
 
   pullRequest:
