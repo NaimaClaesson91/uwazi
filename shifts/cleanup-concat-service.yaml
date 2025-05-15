@@ -49,4 +49,4 @@ spec:
 
   targetRepositorySource:
     codesearch:
-      query: '"addService\(ConcatService" lifecycle:"production" lang:"Java" -repo:"spotify/services-pilot"'
+      query: 'addService\(ConcatService lifecycle:"production" lang:"Java" -repo:"spotify/services-pilot"'
