@@ -23,7 +23,7 @@ spec:
           "--no-goose-in-docker",
           "--agent=duck",
           "--format",
-          "--verify-command=mvn verify",
+          "--verify-command=mvn verify -q",
           "--verify-pattern=BUILD SUCCESS",
           "run",
           "--examples", "gs://honk-plans/instructions/remove-concat-service/examples",
