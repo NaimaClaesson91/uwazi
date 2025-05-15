@@ -36,7 +36,7 @@ spec:
       command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
 
   pullRequest:
-    title: "ai-migration: include-http-server-bundle"
+    title: "ai-migration: include-http-server-bundle MMA"
     description: |
       Adds http server panels to monitoring.yaml
 
