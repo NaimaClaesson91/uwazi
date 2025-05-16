@@ -12,7 +12,6 @@ what Honk does.
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
         [
-          "--no-goose-in-docker",
           "run",
           "gs://honk-plans/instructions/${{ shift_name }}/instructions.md",
         ]
@@ -56,7 +55,6 @@ using the ```--examples``` flag:
 ```yaml
       args:
         [
-          "--no-goose-in-docker",
           "run",
           "--examples",
           "gs://honk-plans/instructions/${{ shift_name }}/examples",
@@ -77,8 +75,6 @@ The ```--git-grep``` parameter allows you to select which exact files the Duck a
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
-        - "--model=o3-mini"
-        - "--no-goose-in-docker"
         - "--agent"
         - "duck"
         - "run"

@@ -24,7 +24,6 @@ spec:
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
         [
-          "--no-goose-in-docker",
           "run",
           "gs://honk-plans/instructions/${{ values.shift_name }}/instructions.md",
         ]
