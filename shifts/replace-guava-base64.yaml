@@ -40,13 +40,11 @@ spec:
 
   rollout:
     createCodeChanges: true
-    createPullRequests: true
+    createPullRequests: false
 
   targets:
     where:
       allMatch:
-        - component:
-            lifecycle: experimental
         - subpath:
             at: "**/*.java"
             withContentsMatching: "BaseEncoding.base64()"
