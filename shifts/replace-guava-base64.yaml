@@ -17,8 +17,6 @@ spec:
     - name: honk
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
-        - "--model=o3-mini"
-        - "--no-goose-in-docker"
         - "--agent"
         - "duck"
         - "run"
