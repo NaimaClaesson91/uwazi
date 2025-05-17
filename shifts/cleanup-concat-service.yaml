@@ -19,7 +19,6 @@ spec:
       image: gcr.io/genai-migration-experiment/gaggle:20250515110226-9f04921f
       args:
         [
-          "--model=o3-mini",
           "--no-goose-in-docker",
           "--agent=duck",
           "--format",
