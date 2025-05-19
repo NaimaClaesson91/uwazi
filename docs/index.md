@@ -26,8 +26,9 @@ $ npm install -g @spotify-internal/fleetshift-cli --registry https://artifactory
 $ fleetshift run -m shifts/replace-guava-base64.yaml --repo iam/auth-common --nobuild
 ```
 
+<!-- prettier-ignore -->
 !!! Tip "Join the #ai-assisted-migrations channel"
-If you have any questions or need help, join us in
+    If you have any questions or need help, join us in
 the [#ai-assisted-migrations](https://spotify.enterprise.slack.com/archives/C084MKZRPCH) channel!
 
 
