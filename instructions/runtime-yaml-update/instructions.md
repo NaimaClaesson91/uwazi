@@ -82,3 +82,4 @@ If you do remove the `resourceQuota` add a comment in its place, to tell the use
 # Please do not set the resourceQuota here if it falls below these values as it would be obsolete config.
 
 ```
+If the `resourceQuota` wasn't there to begin with, please also add the same comment mentioned above.
