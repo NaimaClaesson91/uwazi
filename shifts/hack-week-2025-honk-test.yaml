@@ -1,0 +1,92 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: "hack-week-2025-honk-test"
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: "pauloh1"
+    spotify.com/description: |
+      Try out honk and work on extending it for hack week 2025
+spec:
+  # We run under the standard fleetshift service account. This simplifies permission managment.
+  shiftIdentityOptOut: true
+  containers:
+
+    # Honk does not run as root. First we own the workdir to make sure we can write to it.
+    - name: chown-non-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      command: ["sh", "-c", "chown -R 1042:3042 /workdir && ls -la /workdir"]
+
+    # This is where honk runs. Configure Honk in args.
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:latest
+      args:
+        [
+          "run",
+          "gs://honk-plans/instructions/hack-week-2025-honk-test/instructions.md",
+        ]
+      nonRootUser: true
+
+    # Move ownership of the workdir back to root. git needs this.
+    - name: chown-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2@sha256:5c83c28da296869982387e342cae2b105fe6d33f66b3be55c7cb7313969aed79
+      command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
+
+  pullRequest:
+    title: "ai-migration: hack-week-2025-honk-test"
+    description: |
+      Try out honk and work on extending it for hack week 2025
+
+      🪿 This PR has been created by honk based on the [hack-week-2025-honk-test plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/hack-week-2025-honk-test)
+    commitMessage: "hack-week-2025-honk-test: honk!"
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false # enable when ready to rollout to customers
+
+  # For how to write target queries, see:
+  # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
+  targets:
+
+    # Include targets inside a single repo only for testing purposes.
+    # When this field is set, repositories that do not appear here, do not exist as far as the specific shift is concerned:
+    in:
+      repositories:
+        - starfleet/starfleet-test-service
+
+    # Only target directories matching...
+    where:
+
+      # ..._all_ of the folowing conditions (logical AND):
+      allMatch:
+
+        # - the directory is a root of a component which has the following attributes (by _root_ here we mean the location of the info.yaml for the component):
+        - component:
+            type: service
+            lifecycle: experimental
+            # Uncomment to target only a specific system or owner
+            # system: honk
+            # owner: honk-users
+            
+        # - anywhere under the directory there is at least one file that matches the glob pattern "**/*.java" and contains the substring "BaseEncoding.base64()"
+        - subpath:
+            at: "**/*.java"
+            withContentsMatching: "BaseEncoding.base64()"
+
+    # Always exclude directories matching...
+    unless:
+
+      # ..._any_ of the following conditions (logical OR):
+      anyMatch:
+
+        # - the directory is in the list (note: this is a list of _directories_):
+        - inList:
+            - repository: genai-migration/ai-migrations
+              directory: "/" # Setting the directory to "/" indicates the root of the repo. This is the default value and is only added here for clarity.  
+
+        # - the directory is a root of a component which has the following attributes:
+        - component:
+            # exclude the monorepo component itself (but not components _within_ the monorepo)
+            id: services-pilot
