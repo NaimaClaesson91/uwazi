@@ -34,9 +34,12 @@ spec:
       This shift updates the runtime yaml in service repos, in accordance with the runtime crd changes. 
       
       Currently it will remove the `roles` key and the `resourceQuota` key (if the resourceQuota falls within the defaults). 
+      It also adds a comment in place of the `resourceQuota` key, if it doesn't exist or gets removed.
 
       The `roles` key is being removed, due to the deprecation of celo secrets, as that was the only usage of it.
       The `resourceQuota` key may be removed, if the set `resourceQuota` falls below the default values.
+
+      Attention: If this PR includes ANY other changes than the above mentioned, please do not merge it. Reach out to the @warpspeed-goalie in [#deployments-support](https://spotify.enterprise.slack.com/archives/C04BL0L7G8Z), and make them aware.
 
       🪿 This PR has been created by honk based on the [runtime-yaml-update plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/runtime-yaml-update)
     commitMessage: "runtime-yaml-update: honk!"
@@ -50,4 +53,4 @@ spec:
   targetRepositorySource:
     codesearch:
       query: |
-        roles file:runtime.yaml owner:"warpspeed"
+        "kind: Runtime" lang:"YAML" -repo:"kubernetes/import-runtime" -repo:"warpspeed/runtime-operator" 
