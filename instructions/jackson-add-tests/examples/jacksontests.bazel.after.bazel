@@ -1,0 +1,26 @@
+kt_jvm_test_suite(
+    name = "jvm_tests",
+    size = "small",
+    srcs = [
+        "VolumeStateTest.kt",
+    ],
+    associates = [
+        ":helpers",
+        "//src/main/java/com/spotify/connect/volumeimpl:volumeimpl_kt",
+    ],
+    deps = [
+        "//src/main/java/com/spotify/connect/connectaggregatortest",
+        "//src/main/java/com/spotify/connect/coretest",
+        "//src/main/java/com/spotify/connect/providertest",
+        "//src/main/java/com/spotify/connect/volumeimpl",
+        "//src/main/java/com/spotify/connect/volumetest",
+        "@maven//:androidx_test_core",
+        "@maven//:com_google_truth_truth",
+        "@maven//:com_spotify_mobius_mobius_test",
+        "@maven//:junit_junit",
+        "@maven//:org_junit_vintage_junit_vintage_engine",
+        "@maven//:org_robolectric_shadows_framework",
+        "@spotify//src/main/java/com/spotify/time:fake_clock",
+        "@spotify//third_party/core:com_spotify_clientcore_connect_volume_java_testutil",
+    ],
+)

@@ -1,0 +1,81 @@
+# See manifest documentation for details:
+# https://backstage.spotify.net/docs/default/system/fleetshift-system/shift-manifest/shift-manifest-reference-guide/#shift-manifest-reference-guide
+apiVersion: fleetshift.spotify.com/v1
+kind: Shift
+metadata:
+  name: "jackson-add-tests"
+  namespace: genai-migration-experiment
+  annotations:
+    spotify.com/owner: "viacheslavs"
+    spotify.com/description: |
+      First step for implementing ADR 0027 2021-10-18, migrating from Jackson to Moshi - adding serialization/deserialization tests.
+spec:
+  # We run under the standard fleetshift service account. This simplifies permission managment.
+  shiftIdentityOptOut: true
+  containers:
+
+    # Honk does not run as root. First we own the workdir to make sure we can write to it.
+    - name: chown-non-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2
+      command: ["sh", "-c", "chown -R 1042:3042 /workdir && ls -la /workdir"]
+
+    # This is where honk runs. Configure Honk in args.
+    - name: honk
+      image: gcr.io/genai-migration-experiment/gaggle:latest
+      args:
+        [
+          "run",
+          "gs://honk-plans/instructions/jackson-add-tests/instructions.md",
+        ]
+      nonRootUser: true
+
+    # Move ownership of the workdir back to root. git needs this.
+    - name: chown-root
+      image: gcr.io/spotify-base-images/noble:2025.2-2
+      command: ["sh", "-c", "chown -R 0:0 /workdir && ls -la /workdir"]
+
+  pullRequest:
+    title: "ai-migration: jackson-add-tests"
+    description: |
+      First step for implementing ADR 0027 2021-10-18, migrating from Jackson to Moshi - adding serialization/deserialization tests.
+      🪿 This PR has been created by honk based on the [jackson-add-tests plan](https://ghe.spotify.net/genai-migration/ai-migrations/tree/master/instructions/jackson-add-tests)
+    commitMessage: "jackson-add-tests: honk!"
+
+  rollout:
+    createCodeChanges: true
+    createPullRequests: false # enable when ready to rollout to customers
+
+  # For how to write target queries, see:
+  # https://backstage.spotify.net/docs/default/system/fleetshift-system/targeting-repositories/directory-level-targeting/
+  targets:
+
+    # Include targets inside a single repo only for testing purposes.
+    # When this field is set, repositories that do not appear here, do not exist as far as the specific shift is concerned:
+    in:
+      repositories:
+        - android/client-android
+
+    # Only target directories matching...
+    where:
+
+      # ..._all_ of the folowing conditions (logical AND):
+      allMatch:
+
+        # - anywhere under the directory there is at least one file that matches the glob pattern "**/*.java" and contains the substring "BaseEncoding.base64()"
+        - subpath:
+            at: "src/main/java/com/spotify/**/*.kt"
+            withContentsMatching: "import com.fasterxml.jackson"
+
+    # Always exclude directories matching...
+    unless:
+
+      # ..._any_ of the following conditions (logical OR):
+      anyMatch:
+
+        - subpath:
+            at: "src/test/java/com/spotify/*/*Test.kt"
+
+        # - the directory is in the list (note: this is a list of _directories_):
+        - inList:
+            - repository: android/client-android
+              directory: "src/test"
