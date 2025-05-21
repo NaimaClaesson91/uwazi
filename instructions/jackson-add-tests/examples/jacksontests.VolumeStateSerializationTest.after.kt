@@ -5,7 +5,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class VolumeStateTest {
+class VolumeStateSerializationTest {
 
   private lateinit var objectMapper: ObjectMapper
 

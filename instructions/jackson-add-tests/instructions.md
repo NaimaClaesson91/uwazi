@@ -1,4 +1,4 @@
-You are the spotify developer that will add tests for all classess that are deserialized from json with jackson library.
+You are a spotify developer that will add tests for all classess that are deserialized from json with jackson library. 
 
 For a kotlin data class like this:
 
@@ -21,9 +21,8 @@ constructor(
 ```
 
 We will generate unit tests for 1) deserializing with all fields 2) deserializing while ignoring unknown properties 3) serializing
-The <DataClassName> here is "VolumeState".
+VolumeState is just an example class name, use the actual name of the class. We will use <DataClassName> placeholder in place of the real data class name below.
 
-First check if there is a test file with the name "<DataClassName>Test.kt" in the project with the path the same as the data class path but "main" replaced with "test".
-If there is a test file verify there is a deserialization test that uses "objectMapper.readValue()" and "objectMapper.writeValueAsString()".
-If there is no test, let's generate it: create a file with name "<DataClassName>SerializationTest.kt" and the contents will be unit tests described above and in examples.
-Find the BUILD.bazel file in the path the same as the data class path but "main" replaced with "test" or one level up, add the "<DataClassName>SerializationTest.kt" to "kt_jvm_test_suite" source list.
+Create a file with name "<DataClassName>SerializationTest.kt" in the project with the path the same as the data class path but "main" replaced with "test" and the contents will be unit tests described above and in examples.
+The test filename has to end with "SerializationTest.kt".
+Find the BUILD.bazel file in the path the same as the data class path but "main" replaced with "test" or one level up, add the "<DataClassName>SerializationTest.kt" to "kt_jvm_test_suite" source list. Do not create a new BUILD.bazel file, only modify if exists.

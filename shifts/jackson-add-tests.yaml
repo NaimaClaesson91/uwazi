@@ -24,8 +24,14 @@ spec:
       image: gcr.io/genai-migration-experiment/gaggle:latest
       args:
         [
+          "--agent",
+          "duck",
           "run",
           "gs://honk-plans/instructions/jackson-add-tests/instructions.md",
+          "--git-grep",
+          "git grep -l --all-match -e 'import com.fasterxml.jackson.annotation.JsonProperty' -- 'src/main/**/*.kt'",
+          "--examples",
+          "gs://honk-plans/instructions/jackson-add-tests/examples"
         ]
       nonRootUser: true
 
@@ -61,21 +67,7 @@ spec:
       # ..._all_ of the folowing conditions (logical AND):
       allMatch:
 
-        # - anywhere under the directory there is at least one file that matches the glob pattern "**/*.java" and contains the substring "BaseEncoding.base64()"
         - subpath:
             at: "src/main/java/com/spotify/**/*.kt"
             withContentsMatching: "import com.fasterxml.jackson"
 
-    # Always exclude directories matching...
-    unless:
-
-      # ..._any_ of the following conditions (logical OR):
-      anyMatch:
-
-        - subpath:
-            at: "src/test/java/com/spotify/*/*Test.kt"
-
-        # - the directory is in the list (note: this is a list of _directories_):
-        - inList:
-            - repository: android/client-android
-              directory: "src/test"
