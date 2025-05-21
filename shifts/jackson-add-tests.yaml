@@ -63,10 +63,9 @@ spec:
 
     # Only target directories matching...
     where:
-
       # ..._all_ of the folowing conditions (logical AND):
       allMatch:
-
+        - component: { }
         - subpath:
             at: "src/main/java/com/spotify/**/*.kt"
             withContentsMatching: "import com.fasterxml.jackson"
